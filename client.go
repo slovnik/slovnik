@@ -21,7 +21,7 @@ func NewClient(baseURL string) (*Client, error) {
 	client := &Client{}
 	client.client = &http.Client{Timeout: 10 * time.Second}
 
-	u, err := url.Parse(baseURL)
+    u, err := url.Parse(baseURL)
 	if err != nil {
 		return nil, err
 	}

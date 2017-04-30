@@ -17,8 +17,9 @@ type Word struct {
 
 // Method for transforming Word struct to string
 func (w Word) String() string {
-	out := fmt.Sprintf("*%s*\n", w.WordType)
-	out += fmt.Sprintln(strings.Join(w.Translations, ", "))
+	out := fmt.Sprintf("*%s* - %s\n\n", w.Word, strings.Join(w.Translations, ", "))
+	out += fmt.Sprintf("*%s*\n", w.WordType)
+
 	if len(w.Synonyms) > 0 {
 		out += fmt.Sprintln("\n*Synonyms:*")
 		out += fmt.Sprintln(strings.Join(w.Synonyms, ", "))
@@ -26,6 +27,11 @@ func (w Word) String() string {
 	if len(w.Antonyms) > 0 {
 		out += fmt.Sprintln("\n*Antonyms:*")
 		out += fmt.Sprintln(strings.Join(w.Antonyms, ", "))
+	}
+
+	if len(w.DerivedWords) > 0 {
+		out += fmt.Sprintln("\n*Derived words:*")
+		out += fmt.Sprintln(strings.Join(w.DerivedWords, ", "))
 	}
 	return out
 }
