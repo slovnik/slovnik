@@ -12,6 +12,7 @@ const (
 	Cz
 )
 
+// Russian alphabet
 const rusSymbols = "абвгдеёжзийклмнопрстуфхцчшщьыъэюя"
 
 // DetectLanguage used to find out which language is used for the input string

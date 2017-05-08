@@ -21,7 +21,7 @@ func NewClient(baseURL string) (*Client, error) {
 	client := &Client{}
 	client.client = &http.Client{Timeout: 10 * time.Second}
 
-    u, err := url.Parse(baseURL)
+	u, err := url.Parse(baseURL)
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +30,7 @@ func NewClient(baseURL string) (*Client, error) {
 }
 
 // Translate word
-func (c *Client) Translate(word string) (*Word, error) {
+func (c *Client) Translate(word string) ([]Word, error) {
 	const methodURL = "/api/translate/"
 	u := c.baseURL
 	u.Path = path.Join(u.Path, methodURL, word)
@@ -45,7 +45,7 @@ func (c *Client) Translate(word string) (*Word, error) {
 		return nil, fmt.Errorf("Got bad status (%d) from server", r.StatusCode)
 	}
 
-	w := Word{}
+	w := []Word{}
 	json.NewDecoder(r.Body).Decode(&w)
-	return &w, nil
+	return w, nil
 }
