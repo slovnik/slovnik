@@ -19,7 +19,7 @@ func TestNewClient(t *testing.T) {
 	}
 
 	if c.client == nil {
-		t.Fatalf("NewClient, client = %q, want to be defined", c.client)
+		t.Fatal("NewClient, client = nil, want to be defined")
 	}
 }
 
@@ -28,7 +28,7 @@ func TestNewClientBadURL(t *testing.T) {
 	c, err := NewClient(url)
 
 	if c != nil {
-		t.Fatalf("NewClient, client = %q, want nil", c)
+		t.Fatal("NewClient, client is defined, want nil")
 	}
 
 	if err == nil {
@@ -56,26 +56,34 @@ func TestTranslate(t *testing.T) {
 			t.Fatalf("Translate got %q, want %q", r.URL.Path, expectedPath)
 		}
 
-		result := Word{
-			Word:         expectedWord,
-			Translations: expectedTranslations,
-			Synonyms:     expectedSynonyms,
-			Antonyms:     expectedAntonyms,
-			DerivedWords: expectedDerivedWords,
-			WordType:     expectedWordType,
+		result := []Word{
+			{
+				Word:         expectedWord,
+				Translations: expectedTranslations,
+				Synonyms:     expectedSynonyms,
+				Antonyms:     expectedAntonyms,
+				DerivedWords: expectedDerivedWords,
+				WordType:     expectedWordType,
+			},
 		}
 
-		json.NewEncoder(w).Encode(result)
+		err := json.NewEncoder(w).Encode(result)
+
+		if err != nil {
+			t.Fatalf("Encode returned error: %v", err)
+		}
 	}))
 	defer ts.Close()
 
 	slovnikURL := ts.URL
 	c, _ := NewClient(slovnikURL)
 
-	w, err := c.Translate(expectedWord)
+	words, err := c.Translate(expectedWord)
 	if err != nil {
 		t.Fatalf("Translate, got error '%q', want no error", err)
 	}
+
+	w := words[0]
 
 	if w.Word != expectedWord {
 		t.Fatalf("Translate, word = %q, want = %q", w.Word, expectedWord)
