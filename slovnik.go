@@ -13,7 +13,7 @@ type Word struct {
 
 // SampleUse describes example phrase in which word can be used
 type SampleUse struct {
-	Keyword     string
-	Phrase      string
-	Translation string
+	Keyword     string `json:"keyword"`
+	Phrase      string `json:"phrase"`
+	Translation string `json:"translation"`
 }
