@@ -3,7 +3,6 @@ package slovnik
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
 	"path"
@@ -32,11 +31,10 @@ func NewClient(baseURL string) (*Client, error) {
 // Translate word
 func (c *Client) Translate(word string) ([]Word, error) {
 	const methodURL = "/api/translate/"
-	u := c.baseURL
+	u := *c.baseURL
 	u.Path = path.Join(u.Path, methodURL, word)
 	r, err := c.client.Get(u.String())
 	if err != nil {
-		log.Fatal(err)
 		return nil, err
 	}
 	defer r.Body.Close()
